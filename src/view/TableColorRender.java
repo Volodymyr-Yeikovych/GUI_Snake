@@ -6,22 +6,25 @@ import java.awt.*;
 
 public class TableColorRender extends DefaultTableCellRenderer {
     private Color background;
-    private Color textCol;
-    private int lastColumn;
-    private int lastRow;
-    public TableColorRender(Color background, Color textCol, int lastColumn, int lastRow) {
+    public TableColorRender(Color background) {
         this.background = background;
-        this.textCol = textCol;
-        this.lastColumn = lastColumn;
-        this.lastRow = lastRow;
     }
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        if (column == 0 || column == lastColumn || row == 0 || row == lastRow) {
+        if (value == (Object) 1) {
             cell.setBackground(background);
-            cell.setForeground(textCol);
+//            cell.setForeground(background);
+        } else if (value == (Object) 3) {
+            cell.setBackground(Color.RED);
+//            cell.setForeground(Color.RED);
+        } else if (value == (Object) 2) {
+            cell.setBackground(Color.ORANGE);
+//            cell.setForeground(Color.ORANGE);
+        } else {
+            cell.setBackground(Color.WHITE);
+//            cell.setForeground(Color.white);
         }
         return cell;
     }

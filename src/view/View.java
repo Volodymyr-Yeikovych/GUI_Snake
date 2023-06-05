@@ -1,6 +1,12 @@
 package view;
 
+import model.Snake;
+
 public interface View {
-    void initBoard(int[][] boardArray);
+    void displayBoard(int[][] boardArray);
+
+    void displaySnake(Snake snake);
+
+    void refresh();
 
 }

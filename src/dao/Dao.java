@@ -1,5 +1,12 @@
 package dao;
 
+import model.Snake;
+
 public interface Dao {
-    int[][] getBoardArray(int rows, int cols);
+    void initBoard(int rows, int cols);
+    int[][] getBoard();
+
+    void initSnake();
+
+    Snake getSnake();
 }

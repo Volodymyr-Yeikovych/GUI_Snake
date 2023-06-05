@@ -14,7 +14,7 @@ public class Board extends JTable {
     private static final int BORDER_PIXEL_SIZE = 32;
     private static final Color BORDER_COLOR = Color.lightGray;
     private int WIDTH = 576;
-    private int HEIGHT = 832;
+    private int HEIGHT = 864;
     private Object[][] boardArray;
 
     public Board(int startX, int startY, Object[][] boardArray) {
@@ -25,10 +25,10 @@ public class Board extends JTable {
         this.setBounds(startX, startY, WIDTH, HEIGHT);
         this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (int i = 0; i < getColumnCount(); i++) {
-            this.getColumnModel().getColumn(i).setMaxWidth(32);
+            this.getColumnModel().getColumn(i).setMaxWidth(BORDER_PIXEL_SIZE);
         }
 //        this.setShowGrid(false);
-        this.setRowHeight(32);
+        this.setRowHeight(BORDER_PIXEL_SIZE);
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -56,22 +56,15 @@ public class Board extends JTable {
     }
 
     private void drawBoardBorders(Graphics g) {
-        int lastColIndex = this.getColumnCount() - 1;
-        int lastRowIndex = this.getRowCount() - 1;
-        for (int i = 0; i <= lastColIndex; i++) {
-            this.getColumnModel().getColumn(i).setCellRenderer(new TableColorRender(Color.lightGray, Color.white, lastColIndex, lastRowIndex));
+        int lastColIndex = this.getColumnCount();
+        for (int i = 0; i < lastColIndex; i++) {
+            this.getColumnModel().getColumn(i).setCellRenderer(new TableColorRender(BORDER_COLOR));
         }
     }
 
 //    @Override
 //    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 //        Component cell = super.prepareRenderer(renderer, row, column);
-//        int lastColIndex = this.getColumnCount() - 1;
-//        int lastRowIndex = this.getRowCount() - 1;
-//        if (this.)
-//        if (column == 0 || column == lastColIndex || row == 0 || row == lastRowIndex) {
-//            cell.setBackground(BORDER_COLOR);
-//        }
 //        return cell;
 //    }
 }

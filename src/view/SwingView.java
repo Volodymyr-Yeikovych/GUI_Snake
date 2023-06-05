@@ -1,9 +1,11 @@
 package view;
 
+import model.Snake;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class SwingView extends JFrame implements View{
+public class SwingView extends JFrame implements View {
 
     private JTable board;
 
@@ -18,7 +20,7 @@ public class SwingView extends JFrame implements View{
     }
 
     @Override
-    public void initBoard(int[][] boardArray) {
+    public void displayBoard(int[][] boardArray) {
         Object[][] mapped = new Object[boardArray.length][boardArray[0].length];
         for (int i = 0; i < mapped.length; i++) {
             for (int j = 0; j < mapped[i].length; j++) {
@@ -27,5 +29,15 @@ public class SwingView extends JFrame implements View{
         }
         this.board = new Board(100, 100, mapped);
         this.getContentPane().add(board);
+    }
+
+    @Override
+    public void displaySnake(Snake snake) {
+    }
+
+    @Override
+    public void refresh() {
+        this.repaint();
+        board.repaint();
     }
 }
