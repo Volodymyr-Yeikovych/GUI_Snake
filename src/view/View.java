@@ -1,6 +1,6 @@
 package view;
 
 public interface View {
-    void displayBoard();
+    void initBoard(int[][] boardArray);
 
 }

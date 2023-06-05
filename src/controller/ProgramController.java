@@ -13,6 +13,6 @@ public class ProgramController {
     }
 
     public void start() {
-        view.displayBoard();
+        view.initBoard(dao.getBoardArray(26, 18));
     }
 }
