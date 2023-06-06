@@ -90,10 +90,14 @@ public class Snake extends KeyAdapter implements Runnable, Pausable {
         });
     }
 
+    private boolean hasTailCollision() {
+        return nodeList.stream().anyMatch(node -> node.getX() == x && node.getY() == y);
+    }
+
     private void moveRight() {
         shiftParts(x, y);
         x++;
-        if (x == 17) {
+        if (x == 17 || hasTailCollision()) {
             pause();
             gameEndedListeners.forEach(listener -> listener.gameEnded(new GameEndedEvent(this)));
         }
@@ -102,7 +106,7 @@ public class Snake extends KeyAdapter implements Runnable, Pausable {
     private void moveLeft() {
         shiftParts(x, y);
         x--;
-        if (x == 0) {
+        if (x == 0 || hasTailCollision()) {
             pause();
             gameEndedListeners.forEach(listener -> listener.gameEnded(new GameEndedEvent(this)));
         }
@@ -111,7 +115,7 @@ public class Snake extends KeyAdapter implements Runnable, Pausable {
     private void moveDown() {
         shiftParts(x, y);
         y++;
-        if (y == 26) {
+        if (y == 26 || hasTailCollision()) {
             pause();
             gameEndedListeners.forEach(listener -> listener.gameEnded(new GameEndedEvent(this)));
         }
@@ -120,7 +124,7 @@ public class Snake extends KeyAdapter implements Runnable, Pausable {
     private void moveUp() {
         shiftParts(x, y);
         y--;
-        if (y == 0) {
+        if (y == 0 || hasTailCollision()) {
             pause();
             gameEndedListeners.forEach(listener -> listener.gameEnded(new GameEndedEvent(this)));
         }

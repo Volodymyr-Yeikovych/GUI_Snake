@@ -1,15 +1,24 @@
 package dao;
 
+import exception.InvalidAppleSpawnException;
+import model.Apple;
 import model.Snake;
 import model.SnakePart;
+import model.event.AppleEatenEvent;
+import model.event.AppleSpawnedEvent;
 import model.event.CellUpdatedEvent;
+import model.listener.AppleEatenListener;
+import model.listener.AppleSpawnedListener;
 import model.listener.CellUpdatedListener;
 
-public class GameDao implements Dao, CellUpdatedListener {
+import java.util.Random;
+
+public class GameDao implements Dao, CellUpdatedListener, AppleSpawnedListener, AppleEatenListener {
 
     private int[][] board;
 
     private Snake snek;
+    private Apple apple;
 
     @Override
     public void initBoard(int rows, int cols) {
@@ -29,6 +38,7 @@ public class GameDao implements Dao, CellUpdatedListener {
 
     @Override
     public int[][] getBoard() {
+        if (board == null) initBoard(10,10);
         return board;
     }
 
@@ -45,6 +55,27 @@ public class GameDao implements Dao, CellUpdatedListener {
     public Snake getSnake() {
         if (snek == null) initSnake();
         return snek;
+    }
+
+    @Override
+    public Apple getApple() {
+        if (apple == null) initApple();
+        return apple;
+    }
+
+    private void initApple() {
+        if (apple == null) {
+            Random valGenerator = new Random();
+            int randX = valGenerator.nextInt(0, board.length - 2);
+            int randY = valGenerator.nextInt(0, board[0].length - 2);
+            while (snek.hasPartOnCell(randX, randY) || randX == 0 || randY == 0) {
+                randX = valGenerator.nextInt(0, board.length);
+                randY = valGenerator.nextInt(0, board[0].length);
+            }
+            apple = new Apple(randX, randY);
+            System.out.println(randX + "-x y-" + randY);
+            apple.addAppleSpawnedListeners(this);
+        }
     }
 
     private void revalidateSnakePosition() {
@@ -69,5 +100,18 @@ public class GameDao implements Dao, CellUpdatedListener {
                 if (el != 1 && !snek.hasPartOnCell(j, i)) board[i][j] = 0;
             }
         }
+    }
+
+    @Override
+    public void appleEaten(AppleEatenEvent evt) {
+
+    }
+
+    @Override
+    public void appleSpawned(AppleSpawnedEvent evt) {
+        int val = board[apple.getX()][apple.getY()];
+        if (val != 0) throw new InvalidAppleSpawnException("Trying to spawn apple in non empty cell.");
+        board[apple.getX()][apple.getY()] = 4;
+        System.out.println("SET");
     }
 }

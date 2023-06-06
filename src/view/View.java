@@ -1,14 +1,15 @@
 package view;
 
+import model.Apple;
 import model.Snake;
 
-import java.awt.event.ActionListener;
 
-public interface View extends ActionListener {
+public interface View {
     void displayBoard(int[][] boardArray);
 
     void displaySnake(Snake snake);
 
     void refresh();
 
+    void displayApple(Apple apple);
 }

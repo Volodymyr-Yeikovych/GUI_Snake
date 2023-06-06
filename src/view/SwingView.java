@@ -1,8 +1,13 @@
 package view;
 
+import model.Apple;
 import model.Snake;
+import model.event.AppleEatenEvent;
+import model.event.AppleSpawnedEvent;
 import model.event.CellUpdatedEvent;
 import model.event.GameEndedEvent;
+import model.listener.AppleEatenListener;
+import model.listener.AppleSpawnedListener;
 import model.listener.CellUpdatedListener;
 import model.listener.GameEndedListener;
 
@@ -11,7 +16,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 
-public class SwingView extends JFrame implements View, CellUpdatedListener, GameEndedListener {
+public class SwingView extends JFrame implements View, CellUpdatedListener, GameEndedListener, AppleSpawnedListener, AppleEatenListener {
 
     private Board board;
 
@@ -54,8 +59,10 @@ public class SwingView extends JFrame implements View, CellUpdatedListener, Game
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
+    public void displayApple(Apple apple) {
+        apple.addAppleSpawnedListeners(this);
+        apple.addAppleEatenListener(this);
+        apple.notifyAppleSpawnedListeners();
     }
 
     @Override
@@ -67,7 +74,22 @@ public class SwingView extends JFrame implements View, CellUpdatedListener, Game
     public void gameEnded(GameEndedEvent gameEndedEvent) {
         Snake snek = (Snake) gameEndedEvent.getSource();
         snek.terminate();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         this.dispose();
 //        Arrays.stream(Frame.getFrames()).forEach(Window::dispose);
+    }
+
+    @Override
+    public void appleEaten(AppleEatenEvent evt) {
+
+    }
+
+    @Override
+    public void appleSpawned(AppleSpawnedEvent evt) {
+        refresh();
     }
 }

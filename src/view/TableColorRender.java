@@ -7,6 +7,7 @@ import java.awt.*;
 public class TableColorRender extends DefaultTableCellRenderer {
     private Color background;
     private int[][] board;
+
     public TableColorRender(Color background, int[][] board) {
         this.background = background;
         this.board = board;
@@ -19,12 +20,15 @@ public class TableColorRender extends DefaultTableCellRenderer {
         if (val == (Object) 1) {
             cell.setBackground(background);
 //            cell.setForeground(background);
-        } else if (val == (Object) 3) {
-            cell.setBackground(Color.RED);
-//            cell.setForeground(Color.RED);
         } else if (val == (Object) 2) {
             cell.setBackground(Color.ORANGE);
 //            cell.setForeground(Color.ORANGE);
+        } else if (val == (Object) 3) {
+            cell.setBackground(Color.RED);
+//            cell.setForeground(Color.RED);
+        } else if (val == (Object) 4) {
+            cell.setBackground(Color.GREEN);
+//            cell.setForeground(Color.GREEN);
         } else {
             cell.setBackground(Color.WHITE);
 //            cell.setForeground(Color.white);

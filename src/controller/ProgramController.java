@@ -25,5 +25,6 @@ public class ProgramController {
         dao.initSnake();
         view.displayBoard(dao.getBoard());
         view.displaySnake(dao.getSnake());
+        view.displayApple(dao.getApple());
     }
 }

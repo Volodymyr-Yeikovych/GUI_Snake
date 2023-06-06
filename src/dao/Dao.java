@@ -1,5 +1,6 @@
 package dao;
 
+import model.Apple;
 import model.Snake;
 import view.Board;
 
@@ -10,4 +11,6 @@ public interface Dao {
     void initSnake();
 
     Snake getSnake();
+
+    Apple getApple();
 }
