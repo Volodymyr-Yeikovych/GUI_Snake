@@ -1,6 +1,7 @@
 package dao;
 
 import model.Snake;
+import view.Board;
 
 public interface Dao {
     void initBoard(int rows, int cols);

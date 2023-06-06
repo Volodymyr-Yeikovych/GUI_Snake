@@ -1,13 +1,20 @@
 package view;
 
 import model.Snake;
+import model.event.CellUpdatedEvent;
+import model.event.GameEndedEvent;
+import model.listener.CellUpdatedListener;
+import model.listener.GameEndedListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
-public class SwingView extends JFrame implements View {
+public class SwingView extends JFrame implements View, CellUpdatedListener, GameEndedListener {
 
-    private JTable board;
+    private Board board;
+
 
     public SwingView() throws HeadlessException {
         super();
@@ -29,15 +36,38 @@ public class SwingView extends JFrame implements View {
         }
         this.board = new Board(100, 100, mapped);
         this.getContentPane().add(board);
+        board.addBoardArray(boardArray);
+        board.addCellListener(this);
     }
 
     @Override
     public void displaySnake(Snake snake) {
+        snake.addCellUpdatedListener(this);
+        snake.addGameEndedListener(this);
+        this.addKeyListener(snake);
     }
 
     @Override
     public void refresh() {
         this.repaint();
         board.repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+    @Override
+    public void cellUpdated(CellUpdatedEvent evt) {
+        refresh();
+    }
+
+    @Override
+    public void gameEnded(GameEndedEvent gameEndedEvent) {
+        Snake snek = (Snake) gameEndedEvent.getSource();
+        snek.terminate();
+        this.dispose();
+//        Arrays.stream(Frame.getFrames()).forEach(Window::dispose);
     }
 }

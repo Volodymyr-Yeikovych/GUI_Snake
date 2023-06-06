@@ -2,10 +2,10 @@ package dao;
 
 import model.Snake;
 import model.SnakePart;
+import model.event.CellUpdatedEvent;
+import model.listener.CellUpdatedListener;
 
-import java.util.Arrays;
-
-public class GameDao implements Dao {
+public class GameDao implements Dao, CellUpdatedListener {
 
     private int[][] board;
 
@@ -36,6 +36,7 @@ public class GameDao implements Dao {
     public void initSnake() {
         if (snek == null) {
             snek = new Snake(board[0].length / 2, board.length / 2);
+            snek.addCellUpdatedListener(this);
             new Thread(snek).start();
         }
     }
@@ -43,7 +44,6 @@ public class GameDao implements Dao {
     @Override
     public Snake getSnake() {
         if (snek == null) initSnake();
-        revalidateSnakePosition();
         return snek;
     }
 
@@ -53,6 +53,21 @@ public class GameDao implements Dao {
         board[headY][headX] = 3;
         for (SnakePart p : snek.getNodes()) {
             board[p.getY()][p.getX()] = 2;
+        }
+    }
+
+    @Override
+    public void cellUpdated(CellUpdatedEvent evt) {
+        revalidateSnakePosition();
+        clearPreviousParts();
+    }
+
+    private void clearPreviousParts() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                int el = board[i][j];
+                if (el != 1 && !snek.hasPartOnCell(j, i)) board[i][j] = 0;
+            }
         }
     }
 }

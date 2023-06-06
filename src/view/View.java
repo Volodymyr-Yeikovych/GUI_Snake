@@ -2,7 +2,9 @@ package view;
 
 import model.Snake;
 
-public interface View {
+import java.awt.event.ActionListener;
+
+public interface View extends ActionListener {
     void displayBoard(int[][] boardArray);
 
     void displaySnake(Snake snake);
