@@ -1,6 +1,7 @@
 package controller;
 
 import dao.Dao;
+import model.listener.ScoreWindowOpenedListener;
 import view.View;
 
 import java.util.Arrays;
@@ -16,15 +17,12 @@ public class ProgramController {
         this.dao = dao;
     }
 
-    public static void notifyView() {
-
-    }
-
     public void start() {
         dao.initBoard(27, 18);
         dao.initSnake();
         view.displayBoard(dao.getBoard());
         view.displaySnake(dao.getSnake());
         view.displayApple(dao.getApple());
+        view.addScoreWindowOpenedListener(dao);
     }
 }

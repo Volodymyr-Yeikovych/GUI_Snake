@@ -1,5 +1,7 @@
 package model;
 
+import model.event.AppleEatenEvent;
+import model.event.AppleSpawnedEvent;
 import model.event.CellUpdatedEvent;
 import model.event.GameEndedEvent;
 import model.listener.*;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Snake extends KeyAdapter implements Runnable, Pausable {
+public class Snake extends KeyAdapter implements Runnable, Pausable, AppleSpawnedListener {
 
     private int x;
     private int y;
@@ -22,6 +24,8 @@ public class Snake extends KeyAdapter implements Runnable, Pausable {
     private boolean terminated = false;
     private boolean paused = false;
     private final Object pauseLock = new Object();
+    private Apple apple;
+    private int applesEaten = 0;
     private List<SnakePart> nodeList = new CopyOnWriteArrayList<>();
     private List<CellUpdatedListener> cellUpdatedListeners = new CopyOnWriteArrayList<>();
     private List<GameEndedListener> gameEndedListeners = new CopyOnWriteArrayList<>();
@@ -56,7 +60,7 @@ public class Snake extends KeyAdapter implements Runnable, Pausable {
                     }
                     if (terminated) break;
                 }
-                Thread.sleep(500);
+                Thread.sleep(250);
                 if (terminated) break;
                 if (paused) continue;
                 move();
@@ -73,8 +77,30 @@ public class Snake extends KeyAdapter implements Runnable, Pausable {
         if (isDown && !isUp) moveDown();
         if (isLeft && !isRight) moveLeft();
         if (isRight && !isLeft) moveRight();
-//        nodeList.forEach(node -> System.out.println(node.getX() + "-x y-" + node.getY()));
+        if (hasAppleCollision()) {
+            apple.notifyAppleEatenListeners();
+            this.triggerExpansion();
+            applesEaten++;
+        }
         notifyCellUpdatedListeners();
+    }
+
+    private void triggerExpansion() {
+        SnakePart last = nodeList.get(nodeList.size() - 1);
+        int lastPartX = last.getX();
+        int lastPartY = last.getY();
+        if (lastPartX + 1 == 17) {
+            if (lastPartY + 1 == 26) lastPartY--;
+            else lastPartY++;
+        } else {
+            lastPartX++;
+        }
+        SnakePart part = new SnakePart(lastPartX, lastPartY);
+        this.nodeList.add(part);
+    }
+
+    private boolean hasAppleCollision() {
+        return apple != null && apple.getX() == x && apple.getY() == y;
     }
 
     private void shiftParts(int x, int y) {
@@ -206,5 +232,10 @@ public class Snake extends KeyAdapter implements Runnable, Pausable {
             isUp = false;
             isDown = false;
         }
+    }
+
+    @Override
+    public void appleSpawned(AppleSpawnedEvent evt) {
+        this.apple = (Apple) evt.getSource();
     }
 }

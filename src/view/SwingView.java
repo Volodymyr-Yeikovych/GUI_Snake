@@ -1,31 +1,28 @@
 package view;
 
+import controller.ProgramController;
 import model.Apple;
 import model.Snake;
-import model.event.AppleEatenEvent;
-import model.event.AppleSpawnedEvent;
-import model.event.CellUpdatedEvent;
-import model.event.GameEndedEvent;
-import model.listener.AppleEatenListener;
-import model.listener.AppleSpawnedListener;
-import model.listener.CellUpdatedListener;
-import model.listener.GameEndedListener;
+import model.event.*;
+import model.listener.*;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SwingView extends JFrame implements View, CellUpdatedListener, GameEndedListener, AppleSpawnedListener, AppleEatenListener {
 
     private Board board;
-
-
+    private ScoreWindow scoreWindow;
+    private List<ScoreWindowOpenedListener> scoreWindowOpenedListeners = new CopyOnWriteArrayList<>();
     public SwingView() throws HeadlessException {
         super();
 
         this.setSize(1080, 1080);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setLayout(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -43,6 +40,7 @@ public class SwingView extends JFrame implements View, CellUpdatedListener, Game
         this.getContentPane().add(board);
         board.addBoardArray(boardArray);
         board.addCellListener(this);
+
     }
 
     @Override
@@ -80,16 +78,26 @@ public class SwingView extends JFrame implements View, CellUpdatedListener, Game
             throw new RuntimeException(e);
         }
         this.dispose();
-//        Arrays.stream(Frame.getFrames()).forEach(Window::dispose);
+        this.scoreWindow = new ScoreWindow();
+        notifyScoreWindowOpenedListeners();
+    //        Arrays.stream(Frame.getFrames()).forEach(Window::dispose);
     }
-
     @Override
     public void appleEaten(AppleEatenEvent evt) {
-
+        refresh();
     }
 
     @Override
     public void appleSpawned(AppleSpawnedEvent evt) {
         refresh();
+    }
+
+    @Override
+    public void addScoreWindowOpenedListener(ScoreWindowOpenedListener listener) {
+        scoreWindowOpenedListeners.add(listener);
+    }
+
+    private void notifyScoreWindowOpenedListeners() {
+        scoreWindowOpenedListeners.forEach(listener -> listener.scoreWindowOpened(new ScoreWindowOpenedEvent(scoreWindow)));
     }
 }

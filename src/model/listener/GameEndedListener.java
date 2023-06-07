@@ -2,6 +2,8 @@ package model.listener;
 
 import model.event.GameEndedEvent;
 
-public interface GameEndedListener {
+import java.util.EventListener;
+
+public interface GameEndedListener extends EventListener {
     void gameEnded(GameEndedEvent gameEndedEvent);
 }

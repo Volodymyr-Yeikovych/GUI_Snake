@@ -2,6 +2,7 @@ package view;
 
 import model.Apple;
 import model.Snake;
+import model.listener.ScoreWindowOpenedListener;
 
 
 public interface View {
@@ -12,4 +13,6 @@ public interface View {
     void refresh();
 
     void displayApple(Apple apple);
+
+    void addScoreWindowOpenedListener(ScoreWindowOpenedListener listener);
 }

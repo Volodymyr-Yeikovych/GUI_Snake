@@ -3,7 +3,9 @@ package model.listener;
 import model.Apple;
 import model.event.AppleSpawnedEvent;
 
-public interface AppleSpawnedListener {
+import java.util.EventListener;
+
+public interface AppleSpawnedListener extends EventListener {
 
     void appleSpawned(AppleSpawnedEvent evt);
 }

@@ -2,6 +2,8 @@ package model.listener;
 
 import model.event.AppleEatenEvent;
 
-public interface AppleEatenListener {
+import java.util.EventListener;
+
+public interface AppleEatenListener extends EventListener {
     void appleEaten(AppleEatenEvent evt);
 }
