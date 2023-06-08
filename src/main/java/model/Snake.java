@@ -15,7 +15,7 @@ public class Snake extends KeyAdapter implements Runnable, Pausable, AppleSpawne
 
     private int x;
     private int y;
-    private final static int initialSize = 5;
+    private final static int initialSize = 1;
     private boolean isLeft = false;
     private boolean isRight = false;
     private boolean isUp = true;
