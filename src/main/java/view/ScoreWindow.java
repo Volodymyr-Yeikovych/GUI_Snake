@@ -19,8 +19,7 @@ public class ScoreWindow extends JFrame {
     private JTextField nameField;
     private JButton saveButton;
     private List<Player> playerList = new CopyOnWriteArrayList<>();
-    private List<SaveButtonClickedListener> saveButtonClickedListeners = new CopyOnWriteArrayList<>();
-    private int playerScore;
+    private final List<SaveButtonClickedListener> saveButtonClickedListeners = new CopyOnWriteArrayList<>();
 
     public ScoreWindow() throws HeadlessException {
         super();
@@ -86,7 +85,6 @@ public class ScoreWindow extends JFrame {
     }
 
     public void addPlayerScore(int score) {
-        this.playerScore = score;
         playerScoreArea.setText(playerScoreArea.getText() + score);
     }
 

@@ -1,6 +1,5 @@
 package model;
 
-import dao.GameDao;
 import model.event.AppleEatenEvent;
 import model.event.AppleSpawnedEvent;
 import model.listener.*;
@@ -11,8 +10,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Apple {
     private int x;
     private int y;
-    private List<AppleSpawnedListener> spawnedListenerList = new CopyOnWriteArrayList<>();
-    private List<AppleEatenListener> eatenListenerList = new CopyOnWriteArrayList<>();
+    private final List<AppleSpawnedListener> spawnedListenerList = new CopyOnWriteArrayList<>();
+    private final List<AppleEatenListener> eatenListenerList = new CopyOnWriteArrayList<>();
     public Apple(int x, int y) {
         this.x = x;
         this.y = y;

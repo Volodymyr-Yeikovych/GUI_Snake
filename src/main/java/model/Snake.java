@@ -1,11 +1,9 @@
 package model;
 
-import model.event.AppleEatenEvent;
 import model.event.AppleSpawnedEvent;
 import model.event.CellUpdatedEvent;
 import model.event.GameEndedEvent;
 import model.listener.*;
-import model.Apple;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -27,10 +25,9 @@ public class Snake extends KeyAdapter implements Runnable, Pausable, AppleSpawne
     private final Object pauseLock = new Object();
     private Apple apple;
     private int applesEaten = 0;
-    private List<SnakePart> nodeList = new CopyOnWriteArrayList<>();
-    private List<CellUpdatedListener> cellUpdatedListeners = new CopyOnWriteArrayList<>();
-    private List<GameEndedListener> gameEndedListeners = new CopyOnWriteArrayList<>();
-    private final Object keyLock = new Object();
+    private final List<SnakePart> nodeList = new CopyOnWriteArrayList<>();
+    private final List<CellUpdatedListener> cellUpdatedListeners = new CopyOnWriteArrayList<>();
+    private final List<GameEndedListener> gameEndedListeners = new CopyOnWriteArrayList<>();
 
     public Snake(int x, int y) {
         this.x = x;

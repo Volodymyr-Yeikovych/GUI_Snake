@@ -2,10 +2,10 @@ package view;
 
 import model.Apple;
 import model.Snake;
-import model.listener.ScoreWindowOpenedListener;
+import model.listener.*;
 
 
-public interface View {
+public interface View extends CellUpdatedListener, GameEndedListener, AppleSpawnedListener, AppleEatenListener {
     void displayBoard(int[][] boardArray);
 
     void displaySnake(Snake snake);

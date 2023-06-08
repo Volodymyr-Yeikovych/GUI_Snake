@@ -5,11 +5,19 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
 public class TableColorRender extends DefaultTableCellRenderer {
-    private Color background;
+    private Color borderColor;
+    private Color snakeHeadColor;
+    private Color snakePartsColor;
+    private Color appleColor;
+    private Color boardColor;
     private int[][] board;
 
-    public TableColorRender(Color background, int[][] board) {
-        this.background = background;
+    public TableColorRender(Color borderColor, Color snakeHeadColor, Color snakePartsColor, Color appleColor, Color boardColor,  int[][] board) {
+        this.borderColor = borderColor;
+        this.snakeHeadColor = snakeHeadColor;
+        this.snakePartsColor = snakePartsColor;
+        this.appleColor = appleColor;
+        this.boardColor = boardColor;
         this.board = board;
     }
 
@@ -18,20 +26,20 @@ public class TableColorRender extends DefaultTableCellRenderer {
         Object val = column >= board[0].length || row >= board.length ? value : board[row][column];
         Component cell = super.getTableCellRendererComponent(table, val, isSelected, hasFocus, row, column);
         if (val == (Object) 1) {
-            cell.setBackground(background);
-            cell.setForeground(background);
+            cell.setBackground(borderColor);
+            cell.setForeground(borderColor);
         } else if (val == (Object) 2) {
-            cell.setBackground(Color.ORANGE);
-            cell.setForeground(Color.ORANGE);
+            cell.setBackground(snakePartsColor);
+            cell.setForeground(snakePartsColor);
         } else if (val == (Object) 3) {
-            cell.setBackground(Color.RED);
-            cell.setForeground(Color.RED);
+            cell.setBackground(snakeHeadColor);
+            cell.setForeground(snakeHeadColor);
         } else if (val == (Object) 4) {
-            cell.setBackground(Color.GREEN);
-            cell.setForeground(Color.GREEN);
+            cell.setBackground(appleColor);
+            cell.setForeground(appleColor);
         } else {
-            cell.setBackground(Color.WHITE);
-            cell.setForeground(Color.white);
+            cell.setBackground(boardColor);
+            cell.setForeground(boardColor);
         }
         return cell;
     }

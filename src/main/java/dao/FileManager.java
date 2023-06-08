@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -33,10 +32,6 @@ public class FileManager {
         try {
             if (!save.exists()) {
                 save.createNewFile();
-            }
-
-            if (!DEFAULT_FILENAME.exists()) {
-                DEFAULT_FILENAME.createNewFile();
             }
         } catch (IOException e) {
             e.printStackTrace();

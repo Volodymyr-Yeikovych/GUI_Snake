@@ -5,13 +5,12 @@ import model.Player;
 import model.Snake;
 import model.SnakePart;
 import model.event.*;
-import model.listener.*;
 import view.ScoreWindow;
 
 import java.util.List;
 import java.util.Random;
 
-public class GameDao implements Dao, CellUpdatedListener, AppleSpawnedListener, AppleEatenListener, SaveButtonClickedListener {
+public class GameDao implements Dao {
 
     private int[][] board;
 
