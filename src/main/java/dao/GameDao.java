@@ -1,31 +1,28 @@
 package dao;
 
-import exception.InvalidAppleSpawnException;
 import model.Apple;
 import model.Player;
 import model.Snake;
 import model.SnakePart;
-import model.event.AppleEatenEvent;
-import model.event.AppleSpawnedEvent;
-import model.event.CellUpdatedEvent;
-import model.event.ScoreWindowOpenedEvent;
-import model.listener.AppleEatenListener;
-import model.listener.AppleSpawnedListener;
-import model.listener.CellUpdatedListener;
-import model.listener.ScoreWindowOpenedListener;
+import model.event.*;
+import model.listener.*;
 import view.ScoreWindow;
 
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class GameDao implements Dao, CellUpdatedListener, AppleSpawnedListener, AppleEatenListener {
+public class GameDao implements Dao, CellUpdatedListener, AppleSpawnedListener, AppleEatenListener, SaveButtonClickedListener {
 
     private int[][] board;
 
     private Snake snek;
     private Apple apple;
     private final Random valGenerator = new Random();
+    private FileManager fileManager;
+
+    public GameDao(FileManager fileManager) {
+        this.fileManager = fileManager;
+    }
 
     @Override
     public void initBoard(int rows, int cols) {
@@ -145,26 +142,25 @@ public class GameDao implements Dao, CellUpdatedListener, AppleSpawnedListener, 
     public void scoreWindowOpened(ScoreWindowOpenedEvent evt) {
         ScoreWindow scoreWindow = (ScoreWindow) evt.getSource();
         scoreWindow.addAllPlayers(getPlayersFromBinaryFile());
+        scoreWindow.addPlayerScore(snek.getScore());
+        scoreWindow.addSaveButtonClickedListeners(this);
     }
 
     private List<Player> getPlayersFromBinaryFile() {
-        List<Player> ppl = new CopyOnWriteArrayList<>();
-        ppl.add(new Player("Vasyl", 100));
-        ppl.add(new Player("Grzegorz", 150));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        ppl.add(new Player("Sophie", 75));
-        return ppl;
+        return fileManager.retrieveFromBin();
+    }
+
+    @Override
+    public void saveButtonClicked(SaveButtonClickedEvent evt) {
+        if (evt.getSource() == null) return;
+        String name = (String) evt.getSource();
+        if (name.isEmpty()) return;
+        savePlayerToBinaryFile(name);
+    }
+
+    private void savePlayerToBinaryFile(String name) {
+        System.out.println("Saving player with name - " + name);
+        Player thisPlayer = new Player(name, snek.getScore());
+        fileManager.saveToBin(thisPlayer);
     }
 }

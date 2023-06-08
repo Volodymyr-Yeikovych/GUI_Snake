@@ -5,6 +5,7 @@ import model.event.AppleSpawnedEvent;
 import model.event.CellUpdatedEvent;
 import model.event.GameEndedEvent;
 import model.listener.*;
+import model.Apple;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -29,6 +30,8 @@ public class Snake extends KeyAdapter implements Runnable, Pausable, AppleSpawne
     private List<SnakePart> nodeList = new CopyOnWriteArrayList<>();
     private List<CellUpdatedListener> cellUpdatedListeners = new CopyOnWriteArrayList<>();
     private List<GameEndedListener> gameEndedListeners = new CopyOnWriteArrayList<>();
+    private final Object keyLock = new Object();
+
     public Snake(int x, int y) {
         this.x = x;
         this.y = y;
@@ -211,23 +214,19 @@ public class Snake extends KeyAdapter implements Runnable, Pausable, AppleSpawne
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-
         if (code == KeyEvent.VK_UP && !isDown) {
             isUp = true;
             isLeft = false;
             isRight = false;
-        }
-        if (code == KeyEvent.VK_DOWN && !isUp) {
+        } else if (code == KeyEvent.VK_DOWN && !isUp) {
             isDown = true;
             isLeft = false;
             isRight = false;
-        }
-        if (code == KeyEvent.VK_LEFT && !isRight) {
+        } else if (code == KeyEvent.VK_LEFT && !isRight) {
             isLeft = true;
             isUp = false;
             isDown = false;
-        }
-        if (code == KeyEvent.VK_RIGHT && !isLeft) {
+        } else if (code == KeyEvent.VK_RIGHT && !isLeft) {
             isRight = true;
             isUp = false;
             isDown = false;
@@ -237,5 +236,9 @@ public class Snake extends KeyAdapter implements Runnable, Pausable, AppleSpawne
     @Override
     public void appleSpawned(AppleSpawnedEvent evt) {
         this.apple = (Apple) evt.getSource();
+    }
+
+    public int getScore() {
+        return applesEaten + initialSize;
     }
 }

@@ -1,11 +1,8 @@
 package controller;
 
 import dao.Dao;
-import model.listener.ScoreWindowOpenedListener;
 import view.View;
 
-import java.util.Arrays;
-import java.util.EventListener;
 
 public class ProgramController {
 

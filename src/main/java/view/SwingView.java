@@ -1,6 +1,5 @@
 package view;
 
-import controller.ProgramController;
 import model.Apple;
 import model.Snake;
 import model.event.*;
@@ -9,8 +8,6 @@ import model.listener.*;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SwingView extends JFrame implements View, CellUpdatedListener, GameEndedListener, AppleSpawnedListener, AppleEatenListener {

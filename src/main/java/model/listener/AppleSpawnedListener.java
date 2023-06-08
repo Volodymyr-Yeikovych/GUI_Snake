@@ -1,6 +1,5 @@
 package model.listener;
 
-import model.Apple;
 import model.event.AppleSpawnedEvent;
 
 import java.util.EventListener;
